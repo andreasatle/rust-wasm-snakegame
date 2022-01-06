@@ -131,7 +131,9 @@ init().then(wasm => {
         drawWorld(ALMOST_WHITE);
         ctx.strokeStyle = GREEN;
         ctx.font = "20px Arial";
-        ctx.strokeText("Press any key", 10, 50);
+        ctx.strokeText("Press any key!", 10, 50);
+        ctx.strokeText("Use arrow keys", 10, 100);
+        ctx.strokeText("or touch screen.", 10, 150);
     }
 
     // Draw and update the game.
