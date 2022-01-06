@@ -59,18 +59,18 @@ init().then(wasm => {
         if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
             if ( xDiff > 0 ) {
                 /* right swipe */ 
-                cmd = 'ArrowRight';
+                cmd = 'ArrowLeft';
             } else {
                 /* left swipe */
-                cmd = 'ArrowLeft';
+                cmd = 'ArrowRight';
             }                       
         } else {
             if ( yDiff > 0 ) {
                 /* down swipe */ 
-                cmd = 'ArrowDown';
+                cmd = 'ArrowUp';
             } else { 
                 /* up swipe */
-                cmd = 'ArrowUp';
+                cmd = 'ArrowDown';
             }                                                                 
         }
         /* reset values */
@@ -96,7 +96,6 @@ init().then(wasm => {
             ctx.moveTo(0, CELL_SIZE*y);
             ctx.lineTo(canvas.width, CELL_SIZE*y);
         }
-        drawCell(0, BLUE)
         ctx.stroke();
     }
 
