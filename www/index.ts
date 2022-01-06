@@ -32,24 +32,26 @@ init().then(wasm => {
     var xDown: any = null;                                                        
     var yDown: any = null;
 
-    function getTouches(evt: any) {
-        return evt.touches ||             
-            evt.originalEvent.touches; 
+    function getTouches(e: any) {
+        e.preventDefault();
+        return e.touches ||             
+            e.originalEvent.touches; 
     }                                                     
                                                                          
-    function handleTouchStart(evt: any) {
-        const firstTouch = getTouches(evt)[0];                                      
+    function handleTouchStart(e: any) {
+        const firstTouch = getTouches(e)[0];                                      
         xDown = firstTouch.clientX;                                      
         yDown = firstTouch.clientY;                                      
     };                                                
                                                                          
-    function handleTouchMove(evt: any) {
+    function handleTouchMove(e: any) {
+        e.preventDefault();
         if ( ! xDown || ! yDown ) {
             return;
         }
 
-        var xUp = evt.touches[0].clientX;                                    
-        var yUp = evt.touches[0].clientY;
+        var xUp = e.touches[0].clientX;                                    
+        var yUp = e.touches[0].clientY;
 
         var xDiff = xUp - xDown;
         var yDiff = yUp - yDown;
