@@ -52,25 +52,25 @@ init().then(wasm => {
         var xUp = evt.touches[0].clientX;                                    
         var yUp = evt.touches[0].clientY;
 
-        var xDiff = xDown - xUp;
-        var yDiff = yDown - yUp;
+        var xDiff = xUp - xDown;
+        var yDiff = yUp - yDown;
         var cmd: string;
 
         if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
             if ( xDiff > 0 ) {
                 /* right swipe */ 
-                cmd = 'ArrowLeft';
+                cmd = 'ArrowRight';
             } else {
                 /* left swipe */
-                cmd = 'ArrowRight';
+                cmd = 'ArrowLeft';
             }                       
         } else {
             if ( yDiff > 0 ) {
                 /* down swipe */ 
-                cmd = 'ArrowUp';
+                cmd = 'ArrowDown';
             } else { 
                 /* up swipe */
-                cmd = 'ArrowDown';
+                cmd = 'ArrowUp';
             }                                                                 
         }
         /* reset values */
