@@ -14,14 +14,14 @@ const CELL_SIZE = 10;
 const WORLD_WIDTH = 20;
 const INITIAL_SNAKE_WIDTH = 3;
 
+// Setup the canvas from HTML.
+const canvas = <HTMLCanvasElement> document.getElementById("snake-canvas");
+const ctx = canvas.getContext("2d");
+
 init().then(wasm => {
     // Create an instance of the world (the game).
     const world = World.new(WORLD_WIDTH, INITIAL_SNAKE_WIDTH);
     const worldWidth = world.width();
-
-    // Setup the canvas from HTML.
-    const canvas = document.getElementById("snake-canvas");
-    const ctx = canvas.getContext("2d");
 
     // Set the dimensions of the canvas.
     canvas.height = canvas.width = worldWidth*CELL_SIZE;
@@ -32,14 +32,14 @@ init().then(wasm => {
     })
 
     // Draw the grid.
-    const drawWorld = (color) => {
+    const drawWorld = (color: string) => {
         ctx.strokeStyle = color;
         ctx.beginPath();
-        for (let x = 0; x <= worldWidth; x++) {
+        for (let x = 0; x <= WORLD_WIDTH; x++) {
             ctx.moveTo(CELL_SIZE*x, 0);
             ctx.lineTo(CELL_SIZE*x, canvas.height);
         }
-        for (let y = 0; y <= worldWidth; y++) {
+        for (let y = 0; y <= WORLD_WIDTH; y++) {
             ctx.moveTo(0, CELL_SIZE*y);
             ctx.lineTo(canvas.width, CELL_SIZE*y);
         }
@@ -47,7 +47,7 @@ init().then(wasm => {
     }
 
     // Draw the snake within the grid.
-    const drawSnake = (headColor, tailColor) => {
+    const drawSnake = (headColor: string, tailColor: string) => {
         const snake_len = world.snake_len()
         const snakeCells = new Uint32Array(wasm.memory.buffer, world.snake_cells(), snake_len)
         
@@ -62,7 +62,7 @@ init().then(wasm => {
     }
 
     // Draw a single cell in the grid (of the world).
-    const drawCell = (idx, color) => {
+    const drawCell = (idx: number, color: string) => {
         ctx.fillStyle = color;
         ctx.beginPath();
         ctx.fillRect(
@@ -103,18 +103,21 @@ init().then(wasm => {
     }
 
     // Game-loop every 100 ms.
-    setInterval(_ => {
-        switch (world.status()) {
-            case GameStatus.Idle:
-                idleState();
-                break;
-            case GameStatus.Playing:
-                playingState();
-                break;
-            case GameStatus.GameOver:
-                gameOverState();
-                break;
-        }
-    }, 100)
-
+    const gameLoop = () => {
+        setTimeout(_ => {
+            switch (world.status()) {
+                case GameStatus.Idle:
+                    idleState();
+                    break;
+                case GameStatus.Playing:
+                    playingState();
+                    break;
+                case GameStatus.GameOver:
+                    gameOverState();
+                    break;
+            }
+            requestAnimationFrame(gameLoop);
+        }, 100)
+    }
+    gameLoop()
 })
