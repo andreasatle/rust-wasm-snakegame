@@ -6,3 +6,4 @@ This game is greatly inspired by the Udemy course ["Rust & WebAssembly with JS (
 * The web interface is written in [typescript](https://www.typescriptlang.org/).
 * An [Express server](https://expressjs.com/) is used for the final build.
 * [Webpack](https://webpack.js.org/) is used to setup a development environment and build the final product.
+* The game is deployed to [heroku](https://snakegame-andreas-atle.herokuapp.com/).

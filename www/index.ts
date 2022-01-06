@@ -26,13 +26,64 @@ init().then(wasm => {
     // Set the dimensions of the canvas.
     canvas.height = canvas.width = worldWidth*CELL_SIZE;
 
+    /// TEST START
+    document.addEventListener('touchstart', handleTouchStart, false);        
+    document.addEventListener('touchmove', handleTouchMove, false);
+
+    var xDown: any = null;                                                        
+    var yDown: any = null;
+
+    function getTouches(evt: any) {
+        return evt.touches ||             // browser API
+            evt.originalEvent.touches; // jQuery
+    }                                                     
+                                                                         
+    function handleTouchStart(evt: any) {
+        const firstTouch = getTouches(evt)[0];                                      
+        xDown = firstTouch.clientX;                                      
+        yDown = firstTouch.clientY;                                      
+    };                                                
+                                                                         
+    function handleTouchMove(evt: any) {
+        if ( ! xDown || ! yDown ) {
+            return;
+        }
+
+        var xUp = evt.touches[0].clientX;                                    
+        var yUp = evt.touches[0].clientY;
+
+        var xDiff = xDown - xUp;
+        var yDiff = yDown - yUp;
+
+        if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
+            if ( xDiff > 0 ) {
+                /* right swipe */ 
+                drawCell(0, RED)
+            } else {
+                /* left swipe */
+                drawCell(5, BLUE)
+            }                       
+        } else {
+            if ( yDiff > 0 ) {
+                /* down swipe */ 
+                drawCell(10, GREEN)
+            } else { 
+                /* up swipe */
+                drawCell(15, ALMOST_WHITE)
+            }                                                                 
+        }
+        /* reset values */
+        xDown = null;
+        yDown = null;                                             
+    };
+    /// TEST END
     // Listen for key-strokes.
     document.addEventListener("keydown", (e) => {
         world.keystroke(e.code);
     })
 
     // Draw the grid.
-    const drawWorld = (color: string) => {
+    function drawWorld(color: string) {
         ctx.strokeStyle = color;
         ctx.beginPath();
         for (let x = 0; x <= WORLD_WIDTH; x++) {
@@ -43,11 +94,12 @@ init().then(wasm => {
             ctx.moveTo(0, CELL_SIZE*y);
             ctx.lineTo(canvas.width, CELL_SIZE*y);
         }
+        drawCell(0, BLUE)
         ctx.stroke();
     }
 
     // Draw the snake within the grid.
-    const drawSnake = (headColor: string, tailColor: string) => {
+    function drawSnake(headColor: string, tailColor: string) {
         const snake_len = world.snake_len()
         const snakeCells = new Uint32Array(wasm.memory.buffer, world.snake_cells(), snake_len)
         
@@ -62,7 +114,7 @@ init().then(wasm => {
     }
 
     // Draw a single cell in the grid (of the world).
-    const drawCell = (idx: number, color: string) => {
+    function drawCell(idx: number, color: string) {
         ctx.fillStyle = color;
         ctx.beginPath();
         ctx.fillRect(
