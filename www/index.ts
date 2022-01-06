@@ -54,27 +54,29 @@ init().then(wasm => {
 
         var xDiff = xDown - xUp;
         var yDiff = yDown - yUp;
+        var cmd: string;
 
         if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
             if ( xDiff > 0 ) {
                 /* right swipe */ 
-                drawCell(0, RED)
+                cmd = 'ArrowRight';
             } else {
                 /* left swipe */
-                drawCell(5, BLUE)
+                cmd = 'ArrowLeft';
             }                       
         } else {
             if ( yDiff > 0 ) {
                 /* down swipe */ 
-                drawCell(10, GREEN)
+                cmd = 'ArrowDown';
             } else { 
                 /* up swipe */
-                drawCell(15, ALMOST_WHITE)
+                cmd = 'ArrowUp';
             }                                                                 
         }
         /* reset values */
         xDown = null;
         yDown = null;                                             
+        world.keystroke(cmd);
     };
     /// TEST END
     // Listen for key-strokes.
