@@ -26,7 +26,6 @@ init().then(wasm => {
     // Set the dimensions of the canvas.
     canvas.height = canvas.width = worldWidth*CELL_SIZE;
 
-    /// TEST START
     document.addEventListener('touchstart', handleTouchStart, false);        
     document.addEventListener('touchmove', handleTouchMove, false);
 
@@ -34,8 +33,8 @@ init().then(wasm => {
     var yDown: any = null;
 
     function getTouches(evt: any) {
-        return evt.touches ||             // browser API
-            evt.originalEvent.touches; // jQuery
+        return evt.touches ||             
+            evt.originalEvent.touches; 
     }                                                     
                                                                          
     function handleTouchStart(evt: any) {
@@ -78,7 +77,7 @@ init().then(wasm => {
         yDown = null;                                             
         world.keystroke(cmd);
     };
-    /// TEST END
+
     // Listen for key-strokes.
     document.addEventListener("keydown", (e) => {
         world.keystroke(e.code);
